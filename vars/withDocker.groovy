@@ -1,5 +1,5 @@
-def call(String image, Closure body) {
-    docker.image(image).inside {
+def call(String image, String options, Closure body) {
+    docker.image(image).inside(options) {
         body()
     }
 }
