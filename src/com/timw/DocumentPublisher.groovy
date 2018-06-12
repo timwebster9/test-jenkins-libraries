@@ -5,6 +5,7 @@ import com.microsoft.azure.documentdb.Document
 import com.microsoft.azure.documentdb.DocumentClient
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import hudson.FilePath
 
 class DocumentPublisher {
 
@@ -47,8 +48,10 @@ class DocumentPublisher {
         this.jsonSlurper.parse(filePath)
     }
 
-    static List findFiles(String basedir, String pattern) {
-        new FileNameFinder().getFileNames(basedir, pattern)
+    static def findFiles(String basedir, String pattern) {
+        def filePath = new hudson.FilePath(new File("${WORKSPACE}/baseDir"))
+        filePath.list(pattern)
+        //new FileNameFinder().getFileNames(basedir, pattern)
     }
 
     Map getBuildInfo() {
