@@ -30,7 +30,7 @@ class DocumentPublisher implements Serializable {
     }
     */
 
-    @NonCPS
+    //@NonCPS
     void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
 
         this.steps.echo "before findFiles"
