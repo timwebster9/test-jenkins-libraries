@@ -32,7 +32,7 @@ class DocumentPublisher implements Serializable {
 
     @NonCPS
     void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
-        def files = findFiles(basedir, pattern)
+        def files = findFiles(baseDir, pattern)
         def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
