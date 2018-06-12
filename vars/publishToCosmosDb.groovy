@@ -9,7 +9,7 @@ def call(steps, params) {
   def documentPublisher = new DocumentPublisher(steps, params.product, params.component, params.environment)
 
   try {
-    documentPublisher.publishAll(documentClient, "dbs/jenkins/colls/performance-metrics", "**/*.json")
+    documentPublisher.publishAll(documentClient, 'dbs/jenkins/colls/performance-metrics', 'build/gatling/reports', '**/*.json')
   }
   finally {
     documentClient.close()
