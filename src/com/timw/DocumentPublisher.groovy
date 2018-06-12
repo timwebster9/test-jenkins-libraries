@@ -60,8 +60,8 @@ class DocumentPublisher implements Serializable {
 
     def findFiles(String baseDir, String pattern) {
 
-        echo 'basedir: $basedir'
-        echo 'pattern: $pattern'
+        steps.echo 'basedir: $basedir'
+        steps.echo 'pattern: $pattern'
 
         steps.dir(baseDir) {
 
