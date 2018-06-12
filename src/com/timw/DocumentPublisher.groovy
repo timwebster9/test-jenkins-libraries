@@ -70,7 +70,7 @@ class DocumentPublisher implements Serializable {
             steps.echo "count: ${files.size()}"
 
             files.each {
-                steps.echo it
+                steps.echo it.path
             }
         }
 
