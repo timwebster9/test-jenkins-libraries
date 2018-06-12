@@ -34,7 +34,7 @@ class DocumentPublisher implements Serializable {
     void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
         def files = findFiles(baseDir, pattern)
 
-        this.steps.echo "${files.size()}"
+        this.steps.echo "Files returned: ${files.size()}"
 
         def documentClient = new DocumentClient(url, key, null, null)
 
