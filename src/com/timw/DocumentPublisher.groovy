@@ -48,8 +48,8 @@ class DocumentPublisher {
         this.jsonSlurper.parse(filePath)
     }
 
-    static def findFiles(String basedir, String pattern) {
-        def filePath = new hudson.FilePath(new File("${WORKSPACE}/baseDir"))
+    static def findFiles(String baseDir, String pattern) {
+        def filePath = new hudson.FilePath(new File(baseDir))
         filePath.list(pattern)
         //new FileNameFinder().getFileNames(basedir, pattern)
     }
