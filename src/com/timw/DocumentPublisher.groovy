@@ -33,6 +33,9 @@ class DocumentPublisher implements Serializable {
     @NonCPS
     void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
         def files = findFiles(baseDir, pattern)
+
+        this.steps.echo "${files.size()}"
+
         def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
