@@ -30,7 +30,7 @@ class DocumentPublisher implements Serializable {
             documents.add(jsonObject)
         }
 
-        publish(url, key, collectionLink, documents)
+        publish(collectionLink, documents)
     }
 
     @NonCPS
