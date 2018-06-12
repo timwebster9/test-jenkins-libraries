@@ -1,3 +1,4 @@
+@Grab('com.microsoft.azure:azure-documentdb:1.15.2')
 import com.microsoft.azure.documentdb.DocumentClient
 import com.timw.DocumentPublisher
 
