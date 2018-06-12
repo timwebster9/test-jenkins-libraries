@@ -31,15 +31,16 @@ class DocumentPublisher implements Serializable {
     */
 
     @NonCPS
-    void publishAll(String url, String key, String collectionLink, String basedir, String pattern) {
-        List files = findFiles(basedir, pattern)
-
-        println files
-
+    void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
+        def files = findFiles(basedir, pattern)
         def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
-            def jsonObject = wrapWithBuildInfo(new File(it))
+            def fullPath = "${WORKSPACE}/${baseDir}/" + it.path
+
+            this.steps.echo fullPath
+
+            def jsonObject = wrapWithBuildInfo(new File(fullPath))
             Document documentDefinition = new Document(jsonObject)
             documentClient.createDocument(collectionLink, documentDefinition, null, false)
 
@@ -59,24 +60,10 @@ class DocumentPublisher implements Serializable {
     }
 
     def findFiles(String baseDir, String pattern) {
-
-        steps.echo "basedir: ${baseDir}"
-        steps.echo "pattern: ${pattern}"
-
         steps.dir(baseDir) {
-
           def files = steps.findFiles(glob: pattern)
-
-            steps.echo "count: ${files.size()}"
-
-            files.each {
-                steps.echo it.path
-            }
+          return files
         }
-
-        //def filePath = new hudson.FilePath(Jenkins.getInstance().getComputer(env.NODE_NAME).getChannel(), baseDir)
-        //filePath.list(pattern)
-        //new FileNameFinder().getFileNames(basedir, pattern)
     }
 
     Map getBuildInfo() {
