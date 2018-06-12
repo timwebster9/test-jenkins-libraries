@@ -46,24 +46,26 @@ class DocumentPublisher implements Serializable {
 
             this.steps.echo fullPath
 
-            def jsonObject = wrapWithBuildInfo(new File(fullPath))
+            def json = this.steps.readJSON file: fullPath
+
+            def jsonObject = wrapWithBuildInfo(it.name, json)
             Document documentDefinition = new Document(jsonObject)
             documentClient.createDocument(collectionLink, documentDefinition, null, false)
-
-            //this.publish(documentClient, collectionLink, jsonObject)
         }
     }
 
-    String wrapWithBuildInfo(File file) {
+    String wrapWithBuildInfo(fileName, json) {
         Map buildInfo = getBuildInfo()
-        buildInfo.put(file.getName(), fileToJson(file))
+        buildInfo.put(fileName, json)
         JsonOutput.toJson(buildInfo).toString()
     }
 
+    /*
     Object fileToJson(File filePath) {
         def jsonSlurper = new JsonSlurper()
         jsonSlurper.parse(filePath)
     }
+    */
 
     def findFiles(String baseDir, String pattern) {
         steps.dir(baseDir) {
