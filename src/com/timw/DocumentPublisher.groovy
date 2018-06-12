@@ -5,6 +5,7 @@ import com.microsoft.azure.documentdb.Document
 import com.microsoft.azure.documentdb.DocumentClient
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import com.cloudbees.groovy.cps.NonCPS
 
 class DocumentPublisher {
 
@@ -13,7 +14,6 @@ class DocumentPublisher {
     def component
     def environment
     def env
-    def jsonSlurper = new JsonSlurper()
 
     DocumentPublisher(steps, product, component, environment) {
         this.steps = steps
@@ -43,8 +43,10 @@ class DocumentPublisher {
         JsonOutput.toJson(buildInfo).toString()
     }
 
+    @NonCPS
     Object fileToJson(File filePath) {
-        this.jsonSlurper.parse(filePath)
+        def jsonSlurper = new JsonSlurper()
+        jsonSlurper.parse(filePath)
     }
 
     def findFiles(String baseDir, String pattern) {
