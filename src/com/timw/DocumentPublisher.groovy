@@ -72,7 +72,8 @@ class DocumentPublisher implements Serializable {
             job_name                     : env.JOB_NAME,
             job_base_name                : env.JOB_BASE_NAME,
             build_tag                    : env.BUILD_TAG,
-            node_name                    : env.NODE_NAME
+            node_name                    : env.NODE_NAME,
+            stage_timestamp              : new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
         ]
     }
 
