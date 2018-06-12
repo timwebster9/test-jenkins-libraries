@@ -28,6 +28,7 @@ class DocumentPublisher {
         documentClient.createDocument(collectionLink, documentDefinition, null, false)
     }
 
+    @NonCPS
     void publishAll(DocumentClient documentClient, String collectionLink, String basedir, String pattern) {
         List files = findFiles(basedir, pattern)
 
@@ -43,7 +44,6 @@ class DocumentPublisher {
         JsonOutput.toJson(buildInfo).toString()
     }
 
-    @NonCPS
     Object fileToJson(File filePath) {
         def jsonSlurper = new JsonSlurper()
         jsonSlurper.parse(filePath)
