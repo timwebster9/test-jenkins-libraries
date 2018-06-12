@@ -39,7 +39,7 @@ class DocumentPublisher implements Serializable {
 
         this.steps.echo "Files returned: ${files.size()}"
 
-        def documentClient = new DocumentClient(url, key, null, null)
+        List documents = new ArrayList()
 
         files.each {
             def fullPath = "${env.WORKSPACE}/${baseDir}/" + it.path
@@ -49,8 +49,25 @@ class DocumentPublisher implements Serializable {
             def json = this.steps.readJSON file: fullPath
 
             def jsonObject = wrapWithBuildInfo(it.name, json)
-            Document documentDefinition = new Document(jsonObject)
-            documentClient.createDocument(collectionLink, documentDefinition, null, false)
+            documents.add(jsonObject)
+        }
+
+        this.doPublish(url, key, collectionLink, documents)
+    }
+
+    @NonCPS
+    private def doPublish(url, key, collectionLink, documents) {
+
+        def documentClient = new DocumentClient(url, key, null, null)
+
+        try {
+            documents.each {
+                Document documentDefinition = new Document(it)
+                documentClient.createDocument(collectionLink, documentDefinition, null, false)
+            }
+        }
+        finally {
+            documentClient.close()
         }
     }
 
