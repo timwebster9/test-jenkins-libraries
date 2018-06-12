@@ -7,6 +7,6 @@ def call(steps, params) {
 
   def documentPublisher = new DocumentPublisher(steps, params.product, params.component, params.environment)
   def reportsDir = "${WORKSPACE}/build/gatling/reports"
-  documentPublisher.publishAll(env.COSMOSDB_URL, env.COSMOSDB_TOKEN_KEY, documentClient, 'dbs/jenkins/colls/performance-metrics', reportsDir, '**/*.json')
+  documentPublisher.publishAll(env.COSMOSDB_URL, env.COSMOSDB_TOKEN_KEY, 'dbs/jenkins/colls/performance-metrics', reportsDir, '**/*.json')
 
 }
