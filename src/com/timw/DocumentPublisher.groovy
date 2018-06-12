@@ -40,8 +40,7 @@ class DocumentPublisher implements Serializable {
 
         try {
             documents.each {
-                Document documentDefinition = new Document(it)
-                documentClient.createDocument(collectionLink, documentDefinition, null, false)
+                documentClient.createDocument(collectionLink, new Document(it), null, false)
             }
         }
         finally {
