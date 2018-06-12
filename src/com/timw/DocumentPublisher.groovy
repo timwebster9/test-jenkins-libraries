@@ -7,7 +7,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import com.cloudbees.groovy.cps.NonCPS
 
-class DocumentPublisher {
+class DocumentPublisher implements Serializable {
 
     def steps
     def product
@@ -23,18 +23,25 @@ class DocumentPublisher {
         this.env = steps.env
     }
 
+    /*
     void publish(DocumentClient documentClient, String collectionLink, Object data) {
         Document documentDefinition = new Document(data)
         documentClient.createDocument(collectionLink, documentDefinition, null, false)
     }
+    */
 
     @NonCPS
-    void publishAll(DocumentClient documentClient, String collectionLink, String basedir, String pattern) {
+    void publishAll(String url, String key, String collectionLink, String basedir, String pattern) {
         List files = findFiles(basedir, pattern)
+
+        def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
             def jsonObject = wrapWithBuildInfo(new File(it))
-            this.publish(documentClient, collectionLink, jsonObject)
+            Document documentDefinition = new Document(jsonObject)
+            documentClient.createDocument(collectionLink, documentDefinition, null, false)
+
+            //this.publish(documentClient, collectionLink, jsonObject)
         }
     }
 
