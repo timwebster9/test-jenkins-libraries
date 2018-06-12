@@ -65,10 +65,13 @@ class DocumentPublisher implements Serializable {
 
         steps.dir(baseDir) {
 
-            return steps.findFiles(glob: pattern)
-            //files.each {
-            //    println it
-            //}
+          def files = steps.findFiles(glob: pattern)
+
+            echo "count: ${files.size}"
+
+            files.each {
+                echo it
+            }
         }
 
         //def filePath = new hudson.FilePath(Jenkins.getInstance().getComputer(env.NODE_NAME).getChannel(), baseDir)
