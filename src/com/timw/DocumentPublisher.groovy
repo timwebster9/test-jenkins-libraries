@@ -57,8 +57,7 @@ class DocumentPublisher implements Serializable {
 
     def findFiles(String baseDir, String pattern) {
         steps.dir(baseDir) {
-          def files = steps.findFiles(glob: pattern)
-          return files
+            steps.findFiles(glob: pattern)
         }
     }
 
