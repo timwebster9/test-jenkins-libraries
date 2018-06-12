@@ -6,6 +6,7 @@ import com.microsoft.azure.documentdb.DocumentClient
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import hudson.FilePath
+import jenkins.model.Jenkins
 
 class DocumentPublisher {
 
@@ -48,8 +49,8 @@ class DocumentPublisher {
         this.jsonSlurper.parse(filePath)
     }
 
-    static def findFiles(String baseDir, String pattern) {
-        def filePath = new hudson.FilePath(new File(baseDir))
+    def findFiles(String baseDir, String pattern) {
+        def filePath = new hudson.FilePath(Jenkins.getInstance().getComputer(env.NODE_NAME).getChannel(), baseDir)
         filePath.list(pattern)
         //new FileNameFinder().getFileNames(basedir, pattern)
     }
