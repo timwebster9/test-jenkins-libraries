@@ -34,6 +34,8 @@ class DocumentPublisher implements Serializable {
     void publishAll(String url, String key, String collectionLink, String basedir, String pattern) {
         List files = findFiles(basedir, pattern)
 
+        println files
+
         def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
@@ -59,10 +61,10 @@ class DocumentPublisher implements Serializable {
     def findFiles(String baseDir, String pattern) {
 
         steps.dir(baseDir) {
-            def files = steps.findFiles(glob: pattern)
-            files.each {
-                println it
-            }
+            return steps.findFiles(glob: pattern)
+            //files.each {
+            //    println it
+            //}
         }
 
         //def filePath = new hudson.FilePath(Jenkins.getInstance().getComputer(env.NODE_NAME).getChannel(), baseDir)
