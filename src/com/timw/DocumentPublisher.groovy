@@ -32,7 +32,10 @@ class DocumentPublisher implements Serializable {
 
     @NonCPS
     void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
+
+        this.steps.echo "before findFiles"
         def files = findFiles(baseDir, pattern)
+        this.steps.echo "after findFIles"
 
         this.steps.echo "Files returned: ${files.size()}"
 
