@@ -42,7 +42,7 @@ class DocumentPublisher implements Serializable {
         def documentClient = new DocumentClient(url, key, null, null)
 
         files.each {
-            def fullPath = "${WORKSPACE}/${baseDir}/" + it.path
+            def fullPath = "${env.WORKSPACE}/${baseDir}/" + it.path
 
             this.steps.echo fullPath
 
