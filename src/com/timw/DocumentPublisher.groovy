@@ -67,7 +67,7 @@ class DocumentPublisher implements Serializable {
 
           def files = steps.findFiles(glob: pattern)
 
-            echo "count: ${files.size}"
+            echo "count: ${files.size()}"
 
             files.each {
                 echo it
