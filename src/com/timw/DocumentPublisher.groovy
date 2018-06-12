@@ -52,6 +52,7 @@ class DocumentPublisher implements Serializable {
             documents.add(jsonObject)
         }
 
+        this.steps.echo "KEY: ${key}"
         this.doPublish(url, key, collectionLink, documents)
     }
 
