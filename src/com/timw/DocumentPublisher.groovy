@@ -4,62 +4,39 @@ package com.timw
 import com.microsoft.azure.documentdb.Document
 import com.microsoft.azure.documentdb.DocumentClient
 import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import com.cloudbees.groovy.cps.NonCPS
 
 class DocumentPublisher implements Serializable {
 
     def steps
-    def product
-    def component
-    def environment
+    def params
     def env
 
-    DocumentPublisher(steps, product, component, environment) {
+    DocumentPublisher(steps, params) {
         this.steps = steps
-        this.product = product
-        this.component = component
-        this.environment = environment
+        this.params = params
         this.env = steps.env
     }
 
-    /*
-    void publish(DocumentClient documentClient, String collectionLink, Object data) {
-        Document documentDefinition = new Document(data)
-        documentClient.createDocument(collectionLink, documentDefinition, null, false)
-    }
-    */
+    void publishAll(String collectionLink, String baseDir, String pattern) {
 
-    //@NonCPS
-    void publishAll(String url, String key, String collectionLink, String baseDir, String pattern) {
-
-        this.steps.echo "before findFiles"
         def files = findFiles(baseDir, pattern)
-        this.steps.echo "after findFIles"
-
-        this.steps.echo "Files returned: ${files.size()}"
-
         List documents = new ArrayList()
 
         files.each {
             def fullPath = "${baseDir}/" + it.path
-
-            this.steps.echo fullPath
-
             def json = this.steps.readJSON file: fullPath
-
             def jsonObject = wrapWithBuildInfo(it.name, json)
             documents.add(jsonObject)
         }
 
-        this.steps.echo "KEY: ${key}"
-        this.doPublish(url, key, collectionLink, documents)
+        publish(url, key, collectionLink, documents)
     }
 
     @NonCPS
-    private def doPublish(url, key, collectionLink, documents) {
+    private def publish(collectionLink, documents) {
 
-        def documentClient = new DocumentClient(url, key, null, null)
+        def documentClient = new DocumentClient(env.COSMOSDB_URL, env.COSMOSDB_TOKEN_KEY, null, null)
 
         try {
             documents.each {
@@ -78,13 +55,6 @@ class DocumentPublisher implements Serializable {
         JsonOutput.toJson(buildInfo).toString()
     }
 
-    /*
-    Object fileToJson(File filePath) {
-        def jsonSlurper = new JsonSlurper()
-        jsonSlurper.parse(filePath)
-    }
-    */
-
     def findFiles(String baseDir, String pattern) {
         steps.dir(baseDir) {
           def files = steps.findFiles(glob: pattern)
@@ -94,17 +64,17 @@ class DocumentPublisher implements Serializable {
 
     Map getBuildInfo() {
         [
-                product                      : product,
-                component                    : component,
-                environment                  : environment,
-                branch_name                  : env.BRANCH_NAME,
-                build_number                 : env.BUILD_NUMBER,
-                build_id                     : env.BUILD_ID,
-                build_display_name           : env.BUILD_DISPLAY_NAME,
-                job_name                     : env.JOB_NAME,
-                job_base_name                : env.JOB_BASE_NAME,
-                build_tag                    : env.BUILD_TAG,
-                node_name                    : env.NODE_NAME
+            product                      : params.product,
+            component                    : params.component,
+            environment                  : params.environment,
+            branch_name                  : env.BRANCH_NAME,
+            build_number                 : env.BUILD_NUMBER,
+            build_id                     : env.BUILD_ID,
+            build_display_name           : env.BUILD_DISPLAY_NAME,
+            job_name                     : env.JOB_NAME,
+            job_base_name                : env.JOB_BASE_NAME,
+            build_tag                    : env.BUILD_TAG,
+            node_name                    : env.NODE_NAME
         ]
     }
 
