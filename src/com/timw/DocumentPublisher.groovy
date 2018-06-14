@@ -36,12 +36,12 @@ class DocumentPublisher implements Serializable {
     private def publish(collectionLink, documents) {
 
         steps.withCredentials([[$class: 'StringBinding', credentialsId: 'cosmosKey', variable: 'COSMOS_KEY']]) {
-            if ('$COSMOS_KEY' == null) {
+            if (env.COSMOS_KEY == null) {
                 steps.echo "CosmosDB key not found, skipping performance metrics publishing"
                 return
             }
 
-            steps.echo 'KEY: ' + "${env.COSMOS_KEY}"
+            steps.echo env.COSMOS_KEY
             def cosmosDbUrl = env.COSMOSDB_URL ?: 'https://pipeline-metrics.documents.azure.com/'
             def documentClient = new DocumentClient(cosmosDbUrl, env.COSMOS_KEY, null, null)
 
