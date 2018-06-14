@@ -14,7 +14,7 @@ class Gatling implements Serializable {
 
   // with Gatling command-line you can't specify a configuration directory, so we need to bind-mount it
   // TODO: use host networking for now as 1) DNS seems to be broken in container and 2) may need it for local perf. testing against localhost
-  public static final String GATLING_RUN_ARGS     = '--network=host -v ' + GATLING_CONF_DIR + ':/etc/gatling/conf'
+  public static final String GATLING_RUN_ARGS     = '--network=host -v ' + '$WORKSPACE/' + GATLING_CONF_DIR + ':/etc/gatling/conf'
 
   def steps
 
