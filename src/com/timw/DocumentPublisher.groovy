@@ -29,13 +29,13 @@ class DocumentPublisher implements Serializable {
             documents.add(wrapWithBuildInfo(it.name, json))
         }
 
-        publish(collectionLink, documents)
+        publish(getCosmosDbKey(), collectionLink, documents)
     }
 
     @NonCPS
-    private def publish(collectionLink, documents) {
+    private def publish(cosmosDbKey, collectionLink, documents) {
 
-        steps.withCredentials([[$class: 'StringBinding', credentialsId: 'cosmosKey1', variable: 'COSMOS_KEY']]) {
+        steps.withCredentials([[$class: 'StringBinding', credentialsId: 'cosmosKey', variable: 'COSMOS_KEY']]) {
             if (env.COSMOS_KEY == null) {
                 steps.echo "CosmosDB key not found, skipping performance metrics publishing"
                 return
@@ -43,7 +43,7 @@ class DocumentPublisher implements Serializable {
 
             steps.echo env.COSMOS_KEY
             def cosmosDbUrl = env.COSMOSDB_URL ?: 'https://pipeline-metrics.documents.azure.com/'
-            def documentClient = new DocumentClient(cosmosDbUrl, env.COSMOS_KEY, null, null)
+            def documentClient = new DocumentClient(cosmosDbUrl, cosmosDbKey, null, null)
 
             try {
                 documents.each {
@@ -54,6 +54,16 @@ class DocumentPublisher implements Serializable {
             finally {
                 documentClient.close()
             }
+        }
+    }
+
+    def getCosmosDbKey() {
+        steps.withCredentials([[$class: 'StringBinding', credentialsId: 'cosmosKey', variable: 'COSMOS_KEY']]) {
+            if (env.COSMOS_KEY == null) {
+                steps.echo "CosmosDB key not found, skipping performance metrics publishing"
+                return
+            }
+            return env.COSMOS_KEY
         }
     }
 
