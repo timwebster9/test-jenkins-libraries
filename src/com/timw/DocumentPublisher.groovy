@@ -41,6 +41,7 @@ class DocumentPublisher implements Serializable {
                 return
             }
 
+            steps.echo 'KEY: $COSMOS_KEY'
             def cosmosDbUrl = env.COSMOSDB_URL ?: 'https://pipeline-metrics.documents.azure.com/'
             def documentClient = new DocumentClient(cosmosDbUrl, '$COSMOS_KEY', null, null)
 
