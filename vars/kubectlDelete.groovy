@@ -1,3 +1,4 @@
-def call(String template) {
-    sh "kubectl delete -f ${template}.yaml"
+def call(String componentName) {
+    sh "kubectl delete service ${componentName}"
+    sh "kubectl delete deployment ${componentName}"
 }
