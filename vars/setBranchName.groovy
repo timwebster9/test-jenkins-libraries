@@ -1,10 +1,11 @@
 def call() {
 
-    def branchName = "${BRANCH_NAME}"
+    def branchName = "${BRANCH_NAME}"?.trim()
 
-    if (!branchName?.trim()) {
-        env.BRANCH_NAME = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim().toLowerCase()
+    if (!branchName) {
+        branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
     }
 
-    currentBuild.displayName = "#${BUILD_NUMBER}: ${BRANCH_NAME}"
+    env.BUILD_BRANCH_NAME = branchName.trim().toLowerCase()
+    currentBuild.displayName = "#${BUILD_NUMBER}: ${BUILD_BRANCH_NAME}"
 }
