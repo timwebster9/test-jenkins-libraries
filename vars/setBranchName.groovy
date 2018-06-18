@@ -1,6 +1,6 @@
 def call() {
 
-    def branchName = "${BRANCH_NAME}"?.trim()
+    def branchName = '$BRANCH_NAME'?.trim()
 
     if (!branchName) {
         branchName = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD')
