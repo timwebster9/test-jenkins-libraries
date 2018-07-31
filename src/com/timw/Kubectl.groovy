@@ -20,7 +20,7 @@ class Kubectl {
 
   def kubectl() {
     //def az = { cmd -> return sh(script: "env AZURE_CONFIG_DIR=/opt/jenkins/.azure-$subscription az $cmd", returnStdout: true).trim() }
-    return {cmd-> return sh(script: "kubectl $cmd -n $this.namespace", returnStdout: true)}
+    return {cmd-> return sh(script: "kubectl $cmd -n ${this.namespace}", returnStdout: true)}
   }
 
 }
