@@ -5,6 +5,8 @@ class Kubectl {
   def steps
   def namespace
 
+  def kubectl = {cmd-> return sh(script: "kubectl $cmd -n ${this.namespace}", returnStdout: true)}
+
   Kubectl(namespace) {
     this.steps
     this.namespace = namespace
@@ -16,11 +18,6 @@ class Kubectl {
 
   def delete() {
 
-  }
-
-  def kubectl() {
-    //def az = { cmd -> return sh(script: "env AZURE_CONFIG_DIR=/opt/jenkins/.azure-$subscription az $cmd", returnStdout: true).trim() }
-    return {cmd-> return sh(script: "kubectl $cmd -n ${this.namespace}", returnStdout: true)}
   }
 
 }
