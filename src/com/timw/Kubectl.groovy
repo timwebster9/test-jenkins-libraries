@@ -13,7 +13,7 @@ class Kubectl {
   }
 
   def apply(String path) {
-    kubectl 'apply -f $path', this.namespace
+    kubectl "apply -f ${path}", this.namespace
   }
 
   def delete() {
