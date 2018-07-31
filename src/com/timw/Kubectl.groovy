@@ -5,9 +5,12 @@ class Kubectl {
   def steps
   def namespace
 
-  def kubectl = {cmd -> return this.steps.sh(script: "kubectl $cmd", returnStdout: true)}
-  def kubectlInNamespace = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd -n $namespace", returnStdout: true)}
-  def kubectlAsJson = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd -n $namespace -o json", returnStdout: true)}
+  def kubectlInNamespace = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd $namespace", returnStdout: true)}
+  def kubectlAsJson = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd $namespace -o json", returnStdout: true)}
+
+  Kubectl(steps) {
+    this.steps = steps
+  }
 
   Kubectl(steps, namespace) {
     this.steps = steps
@@ -15,11 +18,11 @@ class Kubectl {
   }
 
   def apply(String path) {
-    executeInNamespace("apply -f ${path}")
+    execute("apply -f ${path}")
   }
 
   def delete(String path) {
-    executeInNamespace("delete -f ${path}")
+    execute("delete -f ${path}")
   }
 
   def getServiceAsJson(String name) {
@@ -31,15 +34,11 @@ class Kubectl {
   }
 
   def executeAsJson(String command) {
-    kubectlAsJson command, this.namespace
-  }
-
-  def executeInNamespace(String command) {
-    kubectlInNamespace command, this.namespace
+    kubectlAsJson command, this.namespace ? "-n ${this.namespace}" : ""
   }
 
   def execute(String command) {
-    kubectl command
+    kubectlInNamespace command, this.namespace ? "-n ${this.namespace}" : ""
   }
 
 }
