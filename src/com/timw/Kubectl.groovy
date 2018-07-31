@@ -5,10 +5,8 @@ class Kubectl {
   def steps
   def namespace
 
-  def kubectl = {cmd, namespace -> return sh(script: "kubectl $cmd -n $namespace", returnStdout: true)}
-
-  Kubectl(namespace) {
-    this.steps
+  Kubectl(steps, namespace) {
+    this.steps = steps
     this.namespace = namespace
   }
 
@@ -18,6 +16,10 @@ class Kubectl {
 
   def delete() {
 
+  }
+
+  def kubectl() {
+    return {cmd -> return this.steps.sh(script: "kubectl $cmd -n ${this.namespace}", returnStdout: true)}
   }
 
 }
