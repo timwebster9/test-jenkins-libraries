@@ -16,6 +16,10 @@ class Kubectl {
     kubectl "apply -f ${path}", this.namespace
   }
 
+  def getNodes() {
+    kubectl "get nodes", this.namespace
+  }
+
   def delete() {
 
   }
