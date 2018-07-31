@@ -13,19 +13,19 @@ class Kubectl {
   }
 
   def apply(String path) {
-    kubectl "apply -f ${path}", this.namespace
+    execute("apply -f ${path}")
   }
 
-  def getNodes() {
-    kubectl "get nodes", this.namespace
+  def delete(String path) {
+    execute("delete -f ${path}")
   }
 
-  def delete() {
-
+  def getService(String name) {
+    execute("get service ${name}")
   }
 
-  def kubectl() {
-    return
+  def execute(String command) {
+    kubectl command, this.namespace
   }
 
 }
