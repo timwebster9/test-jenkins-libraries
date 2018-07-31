@@ -5,7 +5,7 @@ class Kubectl {
   def steps
   def namespace
 
-  def kubectl = { cmd, namespace, output -> return this.steps.sh(script: "kubectl $cmd $namespace $output", returnStdout: true)}
+  def kubectl = { cmd, namespace, jsonOutput -> return this.steps.sh(script: "kubectl $cmd $namespace $jsonOutput", returnStdout: true)}
 
   Kubectl(steps) {
     this.steps = steps
@@ -28,10 +28,10 @@ class Kubectl {
     execute("get service ${name}", true)
   }
 
-  def execute(String command, boolean output) {
+  def execute(String command, boolean jsonOutput) {
     kubectl command,
             this.namespace ? "-n ${this.namespace}" : "",
-            output ? '-o json' : ""
+            jsonOutput ? '-o json' : ""
   }
 
 }
