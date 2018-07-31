@@ -26,8 +26,7 @@ class Kubectl {
   }
 
   def getNodes() {
-    def nodes = execute("get nodes")
-    this.steps.echo nodes
+    execute("get nodes")
   }
 
   def executeInNamespace(String command) {
