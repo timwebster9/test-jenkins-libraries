@@ -5,7 +5,8 @@ class Kubectl {
   def steps
   def namespace
 
-  def kubectl = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd -n $namespace", returnStdout: true)}
+  def kubectl = {cmd -> return this.steps.sh(script: "kubectl $cmd", returnStdout: true)}
+  def kubectlInNamespace = {cmd, namespace -> return this.steps.sh(script: "kubectl $cmd -n $namespace", returnStdout: true)}
 
   Kubectl(steps, namespace) {
     this.steps = steps
@@ -13,19 +14,27 @@ class Kubectl {
   }
 
   def apply(String path) {
-    execute("apply -f ${path}")
+    executeInNamespace("apply -f ${path}")
   }
 
   def delete(String path) {
-    execute("delete -f ${path}")
+    executeInNamespace("delete -f ${path}")
   }
 
   def getService(String name) {
-    execute("get service ${name}")
+    executeInNamespace("get service ${name}")
+  }
+
+  def getNodes() {
+    execute("get nodes")
+  }
+
+  def executeInNamespace(String command) {
+    kubectlInNamespace command, this.namespace
   }
 
   def execute(String command) {
-    kubectl command, this.namespace
+    kubectl command
   }
 
 }
