@@ -14,9 +14,9 @@ class GithubAPI {
 
     def addLabels(project, issueNumber, labels) {
 
-        body = JsonOutput.toJson(labels)
+        def body = JsonOutput.toJson(labels)
 
-        response = this.steps.httpRequest(httpMode: 'POST',
+        def response = this.steps.httpRequest(httpMode: 'POST',
                                           acceptType: 'APPLICATION_JSON',
                                           contentType: 'APPLICATION_JSON',
                                           url: "${API_URL}/${project}/issues/${issueNumber}/labels",
