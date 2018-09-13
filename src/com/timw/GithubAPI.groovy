@@ -17,12 +17,13 @@ class GithubAPI {
         def body = JsonOutput.toJson(labels)
 
         def response = this.steps.httpRequest(httpMode: 'POST',
-                                          acceptType: 'APPLICATION_JSON',
-                                          contentType: 'APPLICATION_JSON',
-                                          url: "${API_URL}/${project}/issues/${issueNumber}/labels",
-                                          requestBody: "${body}",
-                                          consoleLogResponseBody: true,
-                                          validResponseCodes: '200')
+                                              authentication: 'githubToken',
+                                              acceptType: 'APPLICATION_JSON',
+                                              contentType: 'APPLICATION_JSON',
+                                              url: "${API_URL}/${project}/issues/${issueNumber}/labels",
+                                              requestBody: "${body}",
+                                              consoleLogResponseBody: true,
+                                              validResponseCodes: '200')
     }
 
 }
