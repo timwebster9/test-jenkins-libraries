@@ -12,7 +12,7 @@ class GithubAPI {
         this.steps = steps
     }
 
-    def addLabel(String project, String issueNumber, String... labels) {
+    def addLabel(String project, String issueNumber, List labels) {
 
         body = JsonOutput.toJson(labels)
 
